@@ -1,0 +1,2 @@
+# Business-POS
+Simple project
