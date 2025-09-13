@@ -1,47 +1,65 @@
-/* Hello, this is my first project that I made, if you guys have any suggestions leave it in a comment, TY*/
+/* Hello, this is my first project that I made, if you guys have any suggestions leave it in a comment, TY
+Added try and catch*/
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BusinessPOS {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
-        while (true) {
+        String[] products = {"Milk", "Coffee", "Juice", "Pizza", "Spaghetti"};
+        double[] prices = {2.50, 3.00, 2.00, 12.00, 18.00};
 
-        String[] products = {"Milk", "Coffee", "Tea", "Juice", "Pizza"};
-        Double[] prices = {10.0, 14.0, 8.0, 10.0, 15.0};
         int choice;
-        int quantity;
-        double total;
+        int quantity = 0;
+        double total = 0.0;
 
-        System.out.println("\n ====Business POS====");
-        System.out.println("Available Products: ");
+            while (true) {
 
-        for (int i = 0; i < products.length; i++) {
-            System.out.println((i + 1) + ". " + products[i] + " - $" + prices[i]);
-        }
+                System.out.println("\n===Business POS====");
+                System.out.println("Availabe products:");
 
-        System.out.print("Enter your desired product(1-5) (0 to return): ");0
-        if (choice == 0) {
-            System.out.println("Program stopped by user");
-            scanner.close();
-            return;
-        }
+                for (int i = 0; i < products.length; i++) {
+                    System.out.printf("%d. %s - $%.2f\n", (i + 1), products[i], prices[i]);
+                }
+                System.out.println("0. Checkout");
 
-        if (choice < 0 || choice > products.length) {
-            System.out.println("Invalid Choice Of Product!");
-            continue;
-        }
+                try {
+                    System.out.print("Input what product you want: ");
+                    choice = scanner.nextInt();
+                    int index = choice - 1;
 
-        System.out.print("How many " + products[index] + " would you like?: ");
-        quantity = scanner.nextInt();
+                    if (choice == 0) {
+                        break;
+                    }
 
+                    if (choice < 0 || choice > products.length) {
+                        System.out.printf("Product choice must be between 1 to %s\n", products.length);
+                        continue;
+                    }
 
-        total = quantity * prices[index];
+                    try {
+                        System.out.printf("How many %s would you want?: ", products[index]);
+                        quantity = scanner.nextInt();
 
-        System.out.println("You bought " + quantity + " " + products[index] + " with a total of $" + total);
+                    } catch (InputMismatchException e) {
+                        System.out.println("Using numbers is the only way to choose product quantity!");
+                        scanner.nextLine();
+                        continue;
+                    }
 
-        }
+                    total += quantity * prices[index];
+
+                } catch (InputMismatchException e) {
+                    System.out.println("You can only use numbers when choosing how much you want!");
+                    scanner.nextLine();
+                    continue;
+                }
+            }
+        System.out.println("\n====================================");
+        System.out.printf("Your Subtotal is $%.1f\n", total);
+        System.out.println("Thanks for shopping with us!");
+        scanner.close();
     }
 }
